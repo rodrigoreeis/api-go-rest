@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/rodrigoreeis/api-go-rest/routes"
 
 func main() {
-	fmt.Println("test")
+	routes.HandleRequest()
 }
