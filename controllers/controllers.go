@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -10,23 +9,22 @@ import (
 	"github.com/rodrigoreeis/api-go-rest/models"
 )
 
-func Home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Home page")
-}
-
-func Heath(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-}
-
 func GetPersonalities(w http.ResponseWriter, r *http.Request) {
-	var p []models.Personalities
+	var p []models.Personality
 	database.DB.Find(&p)
 	json.NewEncoder(w).Encode(p)
 }
 
 func GetPersonalityById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	var personality models.Personalities
+	var personality models.Personality
 	database.DB.First(&personality, vars["id"])
+	json.NewEncoder(w).Encode(personality)
+}
+
+func CreatePersonality(w http.ResponseWriter, r *http.Request) {
+	var personality models.Personality
+	json.NewDecoder(r.Body).Decode(&personality)
+	database.DB.Create(&personality)
 	json.NewEncoder(w).Encode(personality)
 }
